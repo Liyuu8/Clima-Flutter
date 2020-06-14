@@ -15,8 +15,4 @@ class Location {
       print(e);
     }
   }
-
-  Map<String, double> getPosition() {
-    return {'latitude': latitude, 'longitude': longitude};
-  }
 }
