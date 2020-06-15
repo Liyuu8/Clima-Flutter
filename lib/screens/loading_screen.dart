@@ -10,7 +10,7 @@ import '../services/networking.dart';
 import './location_screen.dart';
 
 String requestBasedUrl =
-    'https://api.openweathermap.org/data/2.5/weather?appid=${DotEnv().env["api_key"]}';
+    'https://api.openweathermap.org/data/2.5/weather?appid=${DotEnv().env["api_key"]}&units=metric';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -18,9 +18,6 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  double latitude;
-  double longitude;
-
   void getLocationData() async {
     Location location = Location();
     await location.getCurrentLocation();
@@ -30,10 +27,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
     NetworkHelper networkHelper = NetworkHelper(url);
 
     var weatherData = await networkHelper.getData();
-    print(weatherData);
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return LocationScreen();
+      return LocationScreen(
+        locationWeather: weatherData,
+      );
     }));
   }
 

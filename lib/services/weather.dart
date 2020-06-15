@@ -1,4 +1,6 @@
 class WeatherModel {
+  //  https://openweathermap.org/weather-conditions
+
   String getWeatherIcon(int condition) {
     if (condition < 300) {
       return '🌩';
