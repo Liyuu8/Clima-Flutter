@@ -1,7 +1,34 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+// services
+import '../services/location.dart';
+import '../services/networking.dart';
+
+const String OPEN_WEATHER_MAP_URL =
+    'https://api.openweathermap.org/data/2.5/weather';
+
 class WeatherModel {
-  //  https://openweathermap.org/weather-conditions
+  String requestBasedUrl =
+      '$OPEN_WEATHER_MAP_URL?appid=${DotEnv().env["api_key"]}&units=metric';
+
+  Future<dynamic> getLocationWeather() async {
+    Location location = Location();
+    await location.getCurrentLocation();
+
+    String url =
+        '$requestBasedUrl&lat=${location.latitude}&lon=${location.longitude}';
+    NetworkHelper networkHelper = NetworkHelper(url);
+
+    return await networkHelper.getData();
+  }
 
   String getWeatherIcon(int condition) {
+    //  https://openweathermap.org/weather-conditions
+
+    if (condition == null) {
+      return 'Error';
+    }
+
     if (condition < 300) {
       return '🌩';
     } else if (condition < 400) {
@@ -22,6 +49,10 @@ class WeatherModel {
   }
 
   String getMessage(int temp) {
+    if (temp == null) {
+      return 'Unable to get weather data';
+    }
+
     if (temp > 25) {
       return 'It\'s 🍦 time';
     } else if (temp > 20) {
