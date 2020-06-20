@@ -4,6 +4,9 @@ import 'package:clima/utilities/constants.dart';
 // services
 import '../services/weather.dart';
 
+// screens
+import './city_screen.dart';
+
 class LocationScreen extends StatefulWidget {
   LocationScreen({this.locationWeather});
 
@@ -70,7 +73,20 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      String typedCityName = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CityScreen();
+                          },
+                        ),
+                      );
+                      if (typedCityName != null) {
+                        updateUI(await WeatherModel()
+                            .getWeatherByLocation(typedCityName));
+                      }
+                    },
                     child: Icon(
                       Icons.location_city,
                       size: 50.0,
@@ -83,7 +99,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 child: Row(
                   children: <Widget>[
                     Text(
-                      '$temperature°',
+                      '${temperature ?? 0}°',
                       style: kTempTextStyle,
                     ),
                     Text(

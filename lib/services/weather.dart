@@ -11,6 +11,13 @@ class WeatherModel {
   String requestBasedUrl =
       '$OPEN_WEATHER_MAP_URL?appid=${DotEnv().env["api_key"]}&units=metric';
 
+  Future<dynamic> getWeatherByLocation(String cityName) async {
+    String url = '$requestBasedUrl&q=$cityName';
+    NetworkHelper networkHelper = NetworkHelper(url);
+
+    return await networkHelper.getData();
+  }
+
   Future<dynamic> getLocationWeather() async {
     Location location = Location();
     await location.getCurrentLocation();
@@ -26,7 +33,7 @@ class WeatherModel {
     //  https://openweathermap.org/weather-conditions
 
     if (condition == null) {
-      return 'Error';
+      return 'error';
     }
 
     if (condition < 300) {

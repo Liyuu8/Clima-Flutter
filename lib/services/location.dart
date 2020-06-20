@@ -12,7 +12,7 @@ class Location {
       this.latitude = position.latitude;
       this.longitude = position.longitude;
     } catch (e) {
-      print(e);
+      print('Location.getCurrentLocation(): $e');
     }
   }
 }
